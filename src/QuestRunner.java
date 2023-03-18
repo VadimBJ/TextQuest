@@ -53,8 +53,9 @@ public class QuestRunner {
 
   public static boolean quitGame(Hero hero) {
     System.out.printf(BLUE + """
-            %nПоздравляю %s, ты успешно завершил наш квест!
-            %d шагов было пройдено! Мы надеемся, что ты получил массу удовольствия и узнал что-то новое.
+            %nПоздравляю %s, ты успешно завершил наш квест! 
+            Шагов было пройдено: %d
+            Мы надеемся, что ты получил массу удовольствия и узнал что-то новое.
             Будь готов к новым приключениям, и не забывай вернуться к нам снова!""",
         hero.getName(), hero.getSteps());
     return false;
@@ -138,16 +139,16 @@ public class QuestRunner {
   public static void showMap(String[][] strMap) {
     System.out.println(YELLOW + "\n═════════════════════════ КАРТА ═══════════════════════════");
 
-    System.out.printf("                  ┌────┬────┬────┬────┐%n");
-    System.out.printf("                  │    │    │ %s │ %s │%n", strMap[0][2], strMap[0][3]);
-    System.out.printf("                  ├────┼────┼────┼────┤%n");
-    System.out.printf("                  │    │ %s │ %s │    │%n", strMap[1][1], strMap[1][2]);
-    System.out.printf("                  ├────┼────┼────┼────┤%n");
+    System.out.printf("                            ┌────┬────┐%n");
+    System.out.printf("                            │ %s │ %s │%n", strMap[0][2], strMap[0][3]);
+    System.out.printf("                       ┌────┼────┼────┘%n");
+    System.out.printf("                       │ %s │ %s │     %n", strMap[1][1], strMap[1][2]);
+    System.out.printf("                  ┌────┼────┼────┼────┐%n");
     System.out.printf("                  │ %s │ %s │ %s │ %s │%n", strMap[2][0], strMap[2][1],
         strMap[2][2], strMap[2][3]);
-    System.out.printf("                  ├────┼────┼────┼────┤%n");
-    System.out.printf("                  │ %s │    │ %s │    │%n", strMap[3][0], strMap[3][2]);
-    System.out.printf("                  └────┴────┴────┴────┘%n");
+    System.out.printf("                  ├────┼────┼────┼────┘%n");
+    System.out.printf("                  │ %s │    │ %s │     %n", strMap[3][0], strMap[3][2]);
+    System.out.printf("                  └────┴    └────┘     %n");
     System.out.println("                                Kt - Кухня      Bn - Балкон");
     System.out.println("               GR - Игровая     DR - Столовая");
     System.out.println("SR - Спальня   LV - Гостинная   HL - Холл       BR - Ванная");
