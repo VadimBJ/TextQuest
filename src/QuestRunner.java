@@ -16,13 +16,13 @@ public class QuestRunner {
   public static void main(String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     System.out.print("Введите Ваше имя: ");
-    Hero hero = new Hero(br.readLine());
+    Hero hero = new Hero(/*br.readLine()*/ "Вадим");
     Map<String, Room> mapRooms = setRoom();
-    String[][] strMap = buildMap(mapRooms,hero);
+    String[][] strMap = buildMap(mapRooms, hero);
     System.out.println();
-    System.out.println(BLUE+"═══════════ TextQuest: Typical Home Explore ═══════════"+RESET);
-    System.out.println("\nдобро пожаловать в наш квест, "+hero.getName());
-    showMenu(mapRooms,hero);
+    System.out.println(BLUE + "\n═══════════ TextQuest: Typical Home Explore ═══════════" + RESET);
+    System.out.println("\nДобро пожаловать в наш квест, " + hero.getName()+"!");
+    showMenu(mapRooms, hero);
 
 //    for (int i = 0; i < 4; i++) {
 //      for (int j = 0; j < 4; j++) {
@@ -32,42 +32,68 @@ public class QuestRunner {
 //    }
   }
 
-  public static void showMenu(Map<String, Room> mapRooms, Hero hero){
+  public static void showMenu(Map<String, Room> mapRooms, Hero hero) throws IOException {
     Room currentRoom = mapRooms.get(hero.getCurrentRoom());
-    System.out.println();
-    System.out.println(GREEN+currentRoom.getRoomDescription());
+    System.out.println(GREEN + String.format(currentRoom.getRoomDescription()) + RESET);
     System.out.println("""
-        Доступные действия:                
-        1. Пойти вперед
-        2. Пойти назад
+        
+        Доступные действия:
+        1. Пойти вверх
+        2. Пойти вниз
         3. Пойти влево
         4. Пойти вправо
         5. Посмотреть карту
-        6. Выйти из игры                
+        6. Выйти из игры
         """);
     System.out.print("Введите номер действия: ");
-
+    int answear = readIntLimited(1, 6);
+    switch (answear) {
+      case 1 -> makeMove(0, -1);
+      case 2 -> makeMove(0, 1);
+      case 3 -> makeMove(-1, 0);
+      case 4 -> makeMove(1, 0);
+    }
 
   }
 
-  public static String[][] buildMap(Map<String, Room> mapRooms,Hero hero ) {
+  public static void makeMove(int diffColumn, int diffRow) {
+
+  }
+
+  public static int readIntLimited(int min, int max) throws IOException {
+    BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+    int num = 0;
+    do {
+      try {
+        num = Integer.parseInt(br.readLine());
+      } catch (NumberFormatException e) {
+        System.out.println("Вводите только цифры!");
+      }
+      if (!(num >= min && num <= max)) {
+        System.out.printf("Введите число от %d до %d: ", min, max);
+      }
+    } while (!(num >= min && num <= max));
+    return num;
+  }
+
+  public static String[][] buildMap(Map<String, Room> mapRooms, Hero hero) {
     String[][] strMap = new String[4][4];
     for (int i = 0; i < 4; i++) {
       for (int j = 0; j < 4; j++) {
         strMap[i][j] = "  ";
       }
     }
-    for (Map.Entry<String,Room> setRoom : mapRooms.entrySet()){
+    for (Map.Entry<String, Room> setRoom : mapRooms.entrySet()) {
       Room currentRoom = setRoom.getValue();
       int row = currentRoom.getRow();
       int column = currentRoom.getColumn();
       String title = currentRoom.getTitle();
-      strMap[row][column]=title;
+      strMap[row][column] = title;
     }
     int row = hero.getRow();
     int column = hero.getColumn();
-    strMap[row][column]="░░";
-        return strMap;
+    strMap[row][column] = "░░";
+    return strMap;
   }
 
   public static Map<String, Room> setRoom() throws IOException {
@@ -85,16 +111,16 @@ public class QuestRunner {
     return mapRooms;
   }
 
-  public static void showMap(String[][] strMap){
+  public static void showMap(String[][] strMap) {
     System.out.printf("               ┌────┬────┬────┬────┐%n");
-    System.out.printf("               │    │    │ %s │ %s │%n",strMap[0][2],strMap[0][3]);
+    System.out.printf("               │    │    │ %s │ %s │%n", strMap[0][2], strMap[0][3]);
     System.out.printf("               ├────┼────┼────┼────┤%n");
-    System.out.printf("               │    │ %s │ %s │    │%n",strMap[1][1],strMap[1][2]);
+    System.out.printf("               │    │ %s │ %s │    │%n", strMap[1][1], strMap[1][2]);
     System.out.printf("               ├────┼────┼────┼────┤%n");
-    System.out.printf("               │ %s │ %s │ %s │ %s │%n",strMap[2][0],strMap[2][1],
-        strMap[2][2],strMap[2][3]);
+    System.out.printf("               │ %s │ %s │ %s │ %s │%n", strMap[2][0], strMap[2][1],
+        strMap[2][2], strMap[2][3]);
     System.out.printf("               ├────┼────┼────┼────┤%n");
-    System.out.printf("               │ %s │    │ %s │    │%n",strMap[3][0],strMap[3][2]);
+    System.out.printf("               │ %s │    │ %s │    │%n", strMap[3][0], strMap[3][2]);
     System.out.printf("               └────┴────┴────┴────┘%n");
     System.out.println("                                Kt - Кухня      Bn - Балкон");
     System.out.println("               GR - Игровая     DR - Столовая");
