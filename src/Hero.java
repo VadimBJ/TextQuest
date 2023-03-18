@@ -2,7 +2,7 @@ public class Hero {
   private final String name;
   private int steps;
   private int hitCount;
-  private final int MAX_HIT_COUNT=4;
+  private final int MAX_HIT_COUNT=3;
   private String currentRoom;
   private int column;
   private int row;
