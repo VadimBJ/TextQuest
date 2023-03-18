@@ -3,17 +3,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class QuestRunner {
+  public static final String RESET = "\u001B[0m";
+  public static final String BLACK = "\u001B[30m";
+  public static final String RED = "\u001B[31m";
+  public static final String GREEN = "\u001B[32m";
+  public static final String YELLOW = "\u001B[33m";
+  public static final String BLUE = "\u001B[34m";
+  public static final String PURPLE = "\u001B[35m";
+  public static final String CYAN = "\u001B[36m";
+  public static final String WHITE = "\u001B[37m";
+
   public static void main(String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
     System.out.print("Введите Ваше имя: ");
     Hero hero = new Hero(br.readLine());
     Map<String, Room> mapRooms = setRoom();
     String[][] strMap = buildMap(mapRooms,hero);
-    showMap(strMap);
-    hero.setColumn(3);
-    hero.setRow(0);
-    strMap = buildMap(mapRooms,hero);
-    showMap(strMap);
+    System.out.println();
+    System.out.println(BLUE+"═══════════ TextQuest: Typical Home Explore ═══════════"+RESET);
+    System.out.println("\nдобро пожаловать в наш квест, "+hero.getName());
+    showMenu(mapRooms,hero);
 
 //    for (int i = 0; i < 4; i++) {
 //      for (int j = 0; j < 4; j++) {
@@ -21,6 +30,24 @@ public class QuestRunner {
 //      }
 //      System.out.println();
 //    }
+  }
+
+  public static void showMenu(Map<String, Room> mapRooms, Hero hero){
+    Room currentRoom = mapRooms.get(hero.getCurrentRoom());
+    System.out.println();
+    System.out.println(GREEN+currentRoom.getRoomDescription());
+    System.out.println("""
+        Доступные действия:                
+        1. Пойти вперед
+        2. Пойти назад
+        3. Пойти влево
+        4. Пойти вправо
+        5. Посмотреть карту
+        6. Выйти из игры                
+        """);
+    System.out.print("Введите номер действия: ");
+
+
   }
 
   public static String[][] buildMap(Map<String, Room> mapRooms,Hero hero ) {
