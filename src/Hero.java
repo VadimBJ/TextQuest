@@ -15,4 +15,43 @@ public class Hero {
     this.row = 2;
   }
 
+  public String getName() {
+    return name;
+  }
+
+  public int getSteps() {
+    return steps;
+  }
+
+  public int getHitCount() {
+    return hitCount;
+  }
+
+  public String getCurrentRoom() {
+    return currentRoom;
+  }
+
+  public int getColumn() {
+    return column;
+  }
+
+  public int getRow() {
+    return row;
+  }
+
+  public void setHitCount(int hitCount) {
+    this.hitCount = hitCount;
+  }
+
+  public void setCurrentRoom(String currentRoom) {
+    this.currentRoom = currentRoom;
+  }
+
+  public void setColumn(int column) {
+    this.column = column;
+  }
+
+  public void setRow(int row) {
+    this.row = row;
+  }
 }
