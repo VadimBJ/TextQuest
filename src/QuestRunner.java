@@ -15,14 +15,14 @@ public class QuestRunner {
 
   public static void main(String[] args) throws IOException {
     BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-    System.out.print("Введите Ваше имя: ");
+    System.out.print("Введи своё имя: ");
     Hero hero = new Hero(/*br.readLine()*/ "Вадим");
     Map<String, Room> mapRooms = setRoom();
     String[][] strMap = buildMap(mapRooms, hero);
     System.out.println();
     System.out.println(BLUE + "\n═══════════ TextQuest: Typical Home Explore ═══════════" + RESET);
-    System.out.println("\nДобро пожаловать в наш квест, " + hero.getName()+"!");
-    showMenu(mapRooms, hero);
+    System.out.println("\nДобро пожаловать в наш квест, " + hero.getName() + "!");
+    showMenu(mapRooms, hero, strMap);
 
 //    for (int i = 0; i < 4; i++) {
 //      for (int j = 0; j < 4; j++) {
@@ -32,31 +32,62 @@ public class QuestRunner {
 //    }
   }
 
-  public static void showMenu(Map<String, Room> mapRooms, Hero hero) throws IOException {
+  public static void showMenu(Map<String, Room> mapRooms, Hero hero, String[][] strMap) throws IOException {
     Room currentRoom = mapRooms.get(hero.getCurrentRoom());
+    System.out.println();
     System.out.println(GREEN + String.format(currentRoom.getRoomDescription()) + RESET);
-    System.out.println("""
-        
-        Доступные действия:
-        1. Пойти вверх
-        2. Пойти вниз
-        3. Пойти влево
-        4. Пойти вправо
-        5. Посмотреть карту
-        6. Выйти из игры
-        """);
-    System.out.print("Введите номер действия: ");
-    int answear = readIntLimited(1, 6);
-    switch (answear) {
-      case 1 -> makeMove(0, -1);
-      case 2 -> makeMove(0, 1);
-      case 3 -> makeMove(-1, 0);
-      case 4 -> makeMove(1, 0);
+    while (true) {
+      System.out.println("""
+                  
+          Доступные действия:
+          1. Пойти вверх
+          2. Пойти вниз
+          3. Пойти влево
+          4. Пойти вправо
+          5. Посмотреть карту
+          6. Выйти из игры""");
+      System.out.print("Введи номер действия: ");
+      int answear = readIntLimited(1, 6);
+      switch (answear) {
+        case 1 -> makeMove(0, -1, hero, strMap, mapRooms);
+        case 2 -> makeMove(0, 1, hero, strMap, mapRooms);
+        case 3 -> makeMove(-1, 0, hero, strMap, mapRooms);
+        case 4 -> makeMove(1, 0, hero, strMap, mapRooms);
+        case 5 -> showMap(strMap);
+        case 6 -> quitGame(hero);
+      }
+      strMap = buildMap(mapRooms, hero);
     }
-
   }
 
-  public static void makeMove(int diffColumn, int diffRow) {
+  public static void quitGame(Hero hero) {
+    System.out.printf(BLUE + """
+        Поздравляю %s, ты успешно завершил наш квест!
+        Мы надеемся, что ты получил массу удовольствия и узнал что-то новое.
+        Будь готов к новым приключениям, и не забывай вернуться к нам снова!""", hero.getName());
+    System.exit(0);
+  }
+
+  public static void makeMove(int diffColumn, int diffRow, Hero hero, String[][] strMap, Map<String, Room> mapRooms) {
+    int row = hero.getRow();
+    int column = hero.getColumn();
+    row += diffRow;
+    column += diffColumn;
+    if (row < 0 || row > 3 || column < 0 || column > 3) {
+      hero.hitHead();
+      return;
+    }
+    if (strMap[row][column].equals("  ")) {
+      hero.hitHead();
+      return;
+    }
+    hero.setRow(row);
+    hero.setColumn(column);
+    hero.setCurrentRoom(strMap[row][column]);
+    buildMap(mapRooms, hero);
+    Room currentRoom = mapRooms.get(hero.getCurrentRoom());
+    System.out.println();
+    System.out.println(GREEN + String.format(currentRoom.getRoomDescription()) + RESET);
 
   }
 
@@ -67,10 +98,10 @@ public class QuestRunner {
       try {
         num = Integer.parseInt(br.readLine());
       } catch (NumberFormatException e) {
-        System.out.println("Вводите только цифры!");
+        System.out.println("Вводи только цифры!");
       }
       if (!(num >= min && num <= max)) {
-        System.out.printf("Введите число от %d до %d: ", min, max);
+        System.out.printf("Введи число от %d до %d: ", min, max);
       }
     } while (!(num >= min && num <= max));
     return num;

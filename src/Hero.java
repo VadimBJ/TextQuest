@@ -14,6 +14,9 @@ public class Hero {
     this.column = 2;
     this.row = 2;
   }
+  public void hitHead(){
+    System.out.println("hit!");
+  }
 
   public String getName() {
     return name;
