@@ -1,10 +1,15 @@
 public class Hero {
-  private String name;
-  private int steps=0;
-  private int hitCount=0;
+  private final String name;
+  private int steps;
+  private int hitCount;
+  private final int MAX_HIT_COUNT=4;
   private String currentRoom;
   private int column;
   private int row;
+
+  public void setSteps(int steps) {
+    this.steps = steps;
+  }
 
   public Hero(String name) {
     this.name = name;
@@ -14,8 +19,23 @@ public class Hero {
     this.column = 2;
     this.row = 2;
   }
+
   public void hitHead(){
-    System.out.println("hit!");
+    ++hitCount;
+    System.out.println(QuestRunner.RED);
+    if (hitCount == 1) {
+      System.out.println("Ты попытался пройти сквозь стену и очень сильно ударился головой..." +
+          "\nБудь внимательнее!");
+    } else if (hitCount < MAX_HIT_COUNT) {
+      System.out.printf("Ты %dй раз ударился головой о стену! Это до добра не доведет...",hitCount);
+    } else {
+      System.out.println("Ты в очередной раз налетел на стену и получил травмы не совместимые с " +
+          "жизнью... Нам очень жаль" +
+          " ");
+      System.exit(0);
+    }
+
+    System.out.println(QuestRunner.RESET);
   }
 
   public String getName() {
@@ -24,10 +44,6 @@ public class Hero {
 
   public int getSteps() {
     return steps;
-  }
-
-  public int getHitCount() {
-    return hitCount;
   }
 
   public String getCurrentRoom() {
@@ -40,10 +56,6 @@ public class Hero {
 
   public int getRow() {
     return row;
-  }
-
-  public void setHitCount(int hitCount) {
-    this.hitCount = hitCount;
   }
 
   public void setCurrentRoom(String currentRoom) {
